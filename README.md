@@ -4,6 +4,15 @@
 
 This Flutter application simulates the spread of COVID-19 in a population. It visualizes how individuals move around and infect each other based on certain parameters like infection chance and speed. The simulation is built using Dart and Flutter, providing an interactive way to observe the dynamics of disease spread.
 
+## Preview
+
+1. ![image](https://github.com/user-attachments/assets/99df7870-e5c7-428a-8b74-7b342d115902)
+
+2.![image](https://github.com/user-attachments/assets/5c1111c3-3e7d-4243-baa5-2433d9e5ec86)
+
+3.![image](https://github.com/user-attachments/assets/84198f80-2c0c-479c-8275-4c2040b1cc9b)
+
+
 ## Features
 
 - **Dynamic Simulation**: Individuals move around randomly within a defined space.
