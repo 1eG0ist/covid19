@@ -6,11 +6,8 @@ This Flutter application simulates the spread of COVID-19 in a population. It vi
 
 ## Preview
 
-1.![image](https://github.com/user-attachments/assets/99df7870-e5c7-428a-8b74-7b342d115902)
+![image](https://github.com/user-attachments/assets/560f1911-8a3f-4cf4-b64b-79833658be67)
 
-2.![image](https://github.com/user-attachments/assets/5c1111c3-3e7d-4243-baa5-2433d9e5ec86)
-
-3.![image](https://github.com/user-attachments/assets/84198f80-2c0c-479c-8275-4c2040b1cc9b)
 
 
 ## Features
