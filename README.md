@@ -4,6 +4,12 @@
 
 This Flutter application simulates the spread of COVID-19 in a population. It visualizes how individuals move around and infect each other based on certain parameters like infection chance and speed. The simulation is built using Dart and Flutter, providing an interactive way to observe the dynamics of disease spread.
 
+## Preview
+
+![image](https://github.com/user-attachments/assets/560f1911-8a3f-4cf4-b64b-79833658be67)
+
+
+
 ## Features
 
 - **Dynamic Simulation**: Individuals move around randomly within a defined space.
@@ -17,13 +23,12 @@ This Flutter application simulates the spread of COVID-19 in a population. It vi
 ### Prerequisites
 
 - Flutter SDK installed on your machine.
-- Dart programming language knowledge.
 
 ### Installation
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/covid19-simulation.git
+   git clone https://github.com/1eG0ist/covid19.git
    cd covid19-simulation
    ```
 
