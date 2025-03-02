@@ -28,7 +28,7 @@ This Flutter application simulates the spread of COVID-19 in a population. It vi
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/covid19-simulation.git
+   git clone https://github.com/1eG0ist/covid19.git
    cd covid19-simulation
    ```
 
