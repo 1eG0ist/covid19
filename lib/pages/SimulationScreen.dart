@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:covid19/models/SimulationModel.dart';
 import 'package:covid19/utils/SimulationPainter.dart';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 /*
 * Main simulation screen
@@ -19,9 +20,16 @@ class _SimulationScreenState extends State<SimulationScreen> with SingleTickerPr
 
   int initialInfected = 1;
   double infectionChance = 0.1;
+  double mortality = 0.01;
+  double strengthAgainstImmunity = 0.2;
   double speed = 1;
   int totalPeople = 100;
   int menuWidth = 200;
+
+  List<FlSpot> infectedData = [];
+  List<FlSpot> recoveredData = [];
+  List<FlSpot> deadData = [];
+  int timeElapsed = 0;
 
   @override
   void initState() {
@@ -35,18 +43,35 @@ class _SimulationScreenState extends State<SimulationScreen> with SingleTickerPr
       simulation = SimulationModel(
         totalPeople: totalPeople,
         infectionChance: infectionChance,
+        mortality: mortality,
+        strengthAgainstImmunity: strengthAgainstImmunity,
         totalInfected: initialInfected,
         width: MediaQuery.of(context).size.width - menuWidth,
         height: MediaQuery.of(context).size.height,
         speed: speed
       );
       simulation!.start();
+
+      // Очистка данных графика перед новой симуляцией
+      infectedData.clear();
+      recoveredData.clear();
+      deadData.clear();
+      timeElapsed = 0;
     });
 
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!simulation!.isRunning) {
         timer.cancel();
       }
+
+      // Добавляем данные для графика
+      setState(() {
+        infectedData.add(FlSpot(timeElapsed.toDouble(), simulation!.totalInfected.toDouble()));
+        recoveredData.add(FlSpot(timeElapsed.toDouble(), simulation!.people.where((p) => p.isRecovered).length.toDouble()));
+        deadData.add(FlSpot(timeElapsed.toDouble(), simulation!.people.where((p) => p.isDead).length.toDouble()));
+        timeElapsed++;
+      });
+
       timerNotifier.value = '${simulation!.stopwatch.elapsed.inSeconds} seconds';
     });
   }
@@ -71,11 +96,13 @@ class _SimulationScreenState extends State<SimulationScreen> with SingleTickerPr
               ),
             ) : const Expanded(child: SizedBox()),
           Container(
-            width: 200,
+            width: 300,
             color: Colors.white,
             padding: const EdgeInsets.all(10),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                SizedBox(height: 300, child: buildChart()), // График
                 TextField(
                   decoration: const InputDecoration(labelText: 'Total People'),
                   onChanged: (value) {
@@ -122,6 +149,44 @@ class _SimulationScreenState extends State<SimulationScreen> with SingleTickerPr
                   },
                 ),
                 TextField(
+                  decoration: const InputDecoration(labelText: 'Mortality'),
+                  onChanged: (value) {
+                    double? newValue = double.tryParse(value);
+                    if (newValue == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Wrong speed input')),
+                      );
+                      return;
+                    }
+                    if (newValue > 1 || newValue < 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Mortality from 0 to 1')),
+                      );
+                      return;
+                    }
+                    mortality = newValue;
+                  },
+                ),
+                TextField(
+                  decoration: const InputDecoration(labelText: 'Strength against immunity'),
+                  onChanged: (value) {
+                    double? newValue = double.tryParse(value);
+                    if (newValue == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Wrong speed input')),
+                      );
+                      return;
+                    }
+                    if (newValue > 1 || newValue < 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Strength against immunity from 0 to 1')),
+                      );
+                      return;
+                    }
+                    strengthAgainstImmunity = newValue;
+                  },
+                ),
+                TextField(
                   decoration: const InputDecoration(labelText: 'Speed'),
                   onChanged: (value) {
                     double? newValue = double.tryParse(value);
@@ -152,6 +217,41 @@ class _SimulationScreenState extends State<SimulationScreen> with SingleTickerPr
                 ),
               ],
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildChart() {
+    return LineChart(
+      LineChartData(
+        titlesData: FlTitlesData(
+          // leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: true)),
+          bottomTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        ),
+        borderData: FlBorderData(show: true),
+        lineBarsData: [
+          LineChartBarData(
+            spots: infectedData,
+            isCurved: true,
+            barWidth: 2,
+            color: Colors.red,
+            dotData: const FlDotData(show: false),
+          ),
+          LineChartBarData(
+            spots: recoveredData,
+            isCurved: true,
+            barWidth: 2,
+            color: Colors.green,
+            dotData: const FlDotData(show: false),
+          ),
+          LineChartBarData(
+            spots: deadData,
+            isCurved: true,
+            barWidth: 2,
+            color: Colors.black,
+            dotData: const FlDotData(show: false),
           ),
         ],
       ),
