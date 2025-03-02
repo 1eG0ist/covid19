@@ -23,7 +23,6 @@ This Flutter application simulates the spread of COVID-19 in a population. It vi
 ### Prerequisites
 
 - Flutter SDK installed on your machine.
-- Dart programming language knowledge.
 
 ### Installation
 
